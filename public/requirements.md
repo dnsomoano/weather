@@ -1,0 +1,4 @@
+- [X] Refactor into WeatherAPI class
+- [ ] All interacting with the DOM goes into a class
+- [ ] Add methods for class named addForecastToDOM and getUserInput
+- [ ] Push all to github

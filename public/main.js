@@ -21,18 +21,38 @@ class weatherAPI {
 				}
 			})
 			.then((weatherResults) => {
-				const parent = document.querySelector('.weather-results');
-				const _name = document.createElement('li');
-				const _temp = document.createElement('li');
-				const _weather = document.createElement('li');
-				_name.textContent = 'The city: ' + weatherResults.name;
-				_temp.textContent = 'The Temperature: ' + weatherResults.main.temp;
-				_weather.textContent = 'The forecast right now: ' + weatherResults.weather[0].main;
-				parent.appendChild(_name);
-				parent.appendChild(_temp);
-				parent.appendChild(_weather);
+				const printToDOM = new AddToDOM(weatherResults);
+				console.log(printToDOM);
+				printToDOM.addForecastToDOM();
 			});
+	}
+}
 
+class AddToDOM {
+	constructor(message) {
+		this.message = message;
+		this.parent = document.querySelector('.weather-results');
+	}
+
+	// Method for calling back to dom
+	addForecastToDOM() {
+		// created element for name of city
+		const weatherResults = this.message;
+		const _name = document.createElement('li');
+		_name.textContent = 'The city: ' + weatherResults.name;
+		this.parent.appendChild(_name);
+
+		// created element for temperature of city
+		const _temp = document.createElement('li');
+		_temp.textContent = 'The Temperature: ' + weatherResults.main.temp;
+		this.parent.appendChild(_temp);
+
+		// created element for forecast
+		const _weather = document.createElement('li');
+		_weather.textContent = 'The forecast right now: ' + weatherResults.weather[0].main;
+		this.parent.appendChild(_weather);
+
+		// call for location and create element onto DOM
 		navigator.geolocation.getCurrentPosition(function(position) {
 			console.log(position);
 
@@ -55,12 +75,12 @@ class weatherAPI {
 // const APP_ID = ',us&units=imperial&appid=ee6accf634c9e58a5b694bb8d6ef0eb8';
 
 const weatherRequestEvent = () => {
-	// Takes input from user
-  const usrInput = document.querySelector('.search-box').value;
-  const apiSearch = new weatherAPI(usrInput);
-  apiSearch.getWeatherByZipCode();
 	// string interpolation
 	// const _url = `${BASE_URL}${usrInput}${APP_ID}`;
+	// Takes input from user
+	const userInput = document.querySelector('.search-box').value;
+  const apiSearch = new weatherAPI(userInput);
+  apiSearch.getWeatherByZipCode()
 };
 
 document.querySelector('.search-button').addEventListener('click', weatherRequestEvent);
